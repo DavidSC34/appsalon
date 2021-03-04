@@ -1,9 +1,27 @@
+let pagina = 1;
+
 document.addEventListener('DOMContentLoaded', function() {
     iniciarApp();
 });
 
 function iniciarApp() {
     mostrarServicios();
+    //Resalta el Div actual segun el tab al que se presiona
+
+    //Oculta o muestra una seccion segun el tab al que se presiona
+    cambiarSeccion();
+}
+
+function cambiarSeccion(){
+    const enlaces = document.querySelectorAll('.tabs button');
+    enlaces.forEach( e=>{
+            e.addEventListener('click',e=>{
+               e.preventDefault();
+               pagina = parseInt(e.target.dataset.paso);
+               console.log(pagina);
+            });
+            
+    });
 }
 
 async function mostrarServicios() {

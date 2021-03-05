@@ -7,20 +7,43 @@ document.addEventListener('DOMContentLoaded', function() {
 function iniciarApp() {
     mostrarServicios();
     //Resalta el Div actual segun el tab al que se presiona
+    mostrarSeccion();
 
     //Oculta o muestra una seccion segun el tab al que se presiona
     cambiarSeccion();
 }
 
-function cambiarSeccion(){
+function mostrarSeccion() {
+    const seccionActual = document.querySelector(`#paso-${pagina}`);
+    seccionActual.classList.add('mostrar-seccion');
+
+    //Resalta el tab actual
+    const tab = document.querySelector(`[data-paso="${pagina}"]`);
+    tab.classList.add('actual');
+
+}
+
+function cambiarSeccion() {
     const enlaces = document.querySelectorAll('.tabs button');
-    enlaces.forEach( e=>{
-            e.addEventListener('click',e=>{
-               e.preventDefault();
-               pagina = parseInt(e.target.dataset.paso);
-               console.log(pagina);
-            });
-            
+    enlaces.forEach(e => {
+        e.addEventListener('click', e => {
+            e.preventDefault();
+            pagina = parseInt(e.target.dataset.paso);
+            //Eliminar mostrar-seccion del seccion anterior
+            document.querySelector('.mostrar-seccion').classList.remove('mostrar-seccion');
+
+            //Agrega mostrar-seccion donde dimos click 
+            const seccion = document.querySelector(`#paso-${pagina}`);
+            seccion.classList.add('mostrar-seccion');
+
+            //Eliminar la clase de actual en tab anterior
+            document.querySelector('.tabs .actual').classList.remove('actual');
+
+            //Agregar la clase de actual en el nuevo tab
+            const tab = document.querySelector(`[data-paso="${pagina}"]`);
+            tab.classList.add('actual');
+        });
+
     });
 }
 
@@ -70,21 +93,21 @@ async function mostrarServicios() {
     }
 }
 
-function seleccionarServicio(e){
+function seleccionarServicio(e) {
 
-   let elemento;
+    let elemento;
     //Forzar que el eelemento al cual le damos click sea uel DVIV
-    if(e.target.tagName ==='P'){
-      elemento = e.target.parentElement;
-    }else{
-        elemento = e.target;  
+    if (e.target.tagName === 'P') {
+        elemento = e.target.parentElement;
+    } else {
+        elemento = e.target;
 
     }
 
-    if(elemento.classList.contains('seleccionado')){
+    if (elemento.classList.contains('seleccionado')) {
 
         elemento.classList.remove('seleccionado');
-    }else{
+    } else {
 
         elemento.classList.add('seleccionado');
     }

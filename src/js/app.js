@@ -233,13 +233,44 @@ function nombreCita() {
         // console.log(nombreTexto);
         //Validacion de nombre debe tener algo
         if (nombreTexto === '' || nombreTexto.length < 3) {
-            console.log('Nombre no valido');
+            mostrarAlerta('Nombre no valido', 'error');
         } else {
             // console.log('Nombre valido');
+            const alerta = document.querySelector('.alerta');
+            if (alerta) {
+                alerta.remove();
+            }
             cita.nombre = nombreTexto;
             // console.log(cita);
         }
 
     });
 
+}
+
+function mostrarAlerta(mensaje, tipo) {
+    // console.log('El mensaje es: ', mensaje);
+    //Si hay un alerta previa, etnonces no crear otra
+    const alertaPrevia = document.querySelector('.alerta');
+    if (alertaPrevia) {
+        return;
+    }
+    const alerta = document.createElement('DIV');
+
+    alerta.textContent = mensaje;
+    alerta.classList.add('alerta');
+
+    if (tipo === 'error') {
+        alerta.classList.add('error');
+    }
+
+    //insertar en el HTML
+    const formulario = document.querySelector('.formulario');
+    formulario.appendChild(alerta);
+    // console.log(alerta);
+
+    //Eliminar la laerta despues de 3 segundos
+    setTimeout(() => {
+        alerta.remove();
+    }, 3000)
 }

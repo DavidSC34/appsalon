@@ -1,5 +1,12 @@
 let pagina = 1;
 
+const cita = {
+    nombre: '',
+    fecha: '',
+    hora: '',
+    servicios: []
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     iniciarApp();
 });
@@ -19,6 +26,9 @@ function iniciarApp() {
 
     //Compureba l pagina actual para ocultar o mostrar la paginacion
     botonesPaginador();
+
+    //Muestra el resumen de la cita(o mensaje en caso de no pasar la validacion)
+    mostrarResumen();
 }
 
 function mostrarSeccion() {
@@ -121,10 +131,38 @@ function seleccionarServicio(e) {
     if (elemento.classList.contains('seleccionado')) {
 
         elemento.classList.remove('seleccionado');
+        const id = parseInt(elemento.dataset.idServicio);
+        eliminarServicio(id);
     } else {
 
         elemento.classList.add('seleccionado');
+        // console.log(elemento.dataset.idServicio);
+        // console.log(elemento.firstChild.textContent);
+        // console.log(elemento.firstChild.nextElementSibling.textContent);
+        const servicioObj = {
+            id: parseInt(elemento.dataset.idServicio),
+            nombre: elemento.firstChild.textContent,
+            precio: elemento.firstChild.nextElementSibling.textContent
+        };
+        // console.log(servicioObj);
+        agregarServicio(servicioObj);
     }
+}
+
+function eliminarServicio(id) {
+    const { servicios } = cita;
+    cita.servicios = servicios.filter(servicio => servicio.id !== id);
+    // console.log('Eliminando...', id);}
+    console.log(cita);
+
+}
+
+function agregarServicio(servicioObj) {
+    // console.log('Agregando servicio');
+    const { servicios } = cita;
+    cita.servicios = [...servicios, servicioObj]; //la bunea practica es no modicar el original, creo una copia de servicios y pego el servicio elehido
+    console.log(cita);
+
 }
 
 function paginaSiguiente() {
@@ -161,4 +199,26 @@ function botonesPaginador() {
     }
     mostrarSeccion();
 
+}
+
+function mostrarResumen() {
+    // console.log(cita);
+    //DEstructuring
+    const { nombre, fecha, hora, servicios } = cita;
+    //Seleccionar el resumen
+    const resumenDiv = document.querySelector('.contenido-resumen');
+
+    //validacion de objeto
+    if (Object.values(cita).includes('')) {
+        // console.log('El objeto esta vacio');
+        const noServicios = document.createElement('P');
+        noServicios.textContent = 'Faltan datos de Servicios, hora, fecha o nombre';
+        noServicios.classList.add('invalidar-cita');
+        //Agrergar a resumenDiv
+        resumenDiv.appendChild(noServicios);
+
+
+
+
+    }
 }

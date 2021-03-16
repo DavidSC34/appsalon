@@ -31,6 +31,12 @@ function iniciarApp() {
     mostrarResumen();
     //Almacena el nombre de lacita en el objeto
     nombreCita();
+
+    //Almacena la fecha de la cita en el obejto
+    fechaCita();
+
+    //DEshabilitar fecha anterior
+    deshabilitarFechaAnterior();
 }
 
 function mostrarSeccion() {
@@ -272,5 +278,43 @@ function mostrarAlerta(mensaje, tipo) {
     //Eliminar la laerta despues de 3 segundos
     setTimeout(() => {
         alerta.remove();
-    }, 3000)
+    }, 3000);
+}
+
+function fechaCita() {
+    const fechaInput = document.querySelector('#fecha');
+    fechaInput.addEventListener('input', e => {
+        // console.log(e.target.value);
+        const dia = new Date(e.target.value).getUTCDay();
+        console.log(dia);
+
+        if ([0, 6].includes(dia)) {
+            e.preventDefault();
+            fechaInput.value = '';
+            mostrarAlerta('Fines de Semana no son permitidos', 'error');
+        } else {
+            cita.fecha = fechaInput.value;
+            console.log(cita);
+        }
+
+
+
+
+    });
+}
+
+function deshabilitarFechaAnterior() {
+    const inputFecha = document.querySelector('#fecha');
+    const fechaAhora = new Date();
+    const year = fechaAhora.getFullYear();
+    const mes = fechaAhora.getMonth() + 1;
+    const dia = fechaAhora.getDate() + 1;
+    //formato deseado: AAA-MM-DD
+    let mesString = mes.toString();
+    if (mesString.length < 2) {
+        mesString = `0${mesString}`;
+    }
+    const fechaDeshabilitar = `${year}-${mesString}-${dia}`;
+
+    inputFecha.min = fechaDeshabilitar;
 }

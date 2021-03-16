@@ -357,6 +357,10 @@ function horaCita() {
             }, 3000);
         } else {
             // console.log('Hora valida');
+            const alerta = document.querySelector('.alerta');
+            if (alerta) {
+                alerta.remove();
+            }
             cita.hora = horaCita;
             console.log(cita);
         }

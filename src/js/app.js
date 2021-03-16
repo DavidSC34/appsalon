@@ -3,7 +3,7 @@ let pagina = 1;
 const cita = {
     nombre: '',
     fecha: '',
-    hora: '',
+    hora: '12:00',
     servicios: []
 };
 
@@ -37,6 +37,10 @@ function iniciarApp() {
 
     //DEshabilitar fecha anterior
     deshabilitarFechaAnterior();
+
+    //Alamcena la hora de la cia en el objeto
+    horaCita();
+
 }
 
 function mostrarSeccion() {
@@ -201,6 +205,7 @@ function botonesPaginador() {
     } else if (pagina === 3) {
         paginaSiguiente.classList.add('ocultar');
         paginaAnterior.classList.remove('ocultar');
+        mostrarResumen(); //estamos en la pagina 3, carga el resumen de la cita
     } else {
         paginaAnterior.classList.remove('ocultar');
         paginaSiguiente.classList.remove('ocultar');
@@ -216,6 +221,12 @@ function mostrarResumen() {
     //Seleccionar el resumen
     const resumenDiv = document.querySelector('.contenido-resumen');
 
+    //Limpiar el HTMl previo
+    // resumenDiv.innerHTML = '';
+    while (resumenDiv.firstChild) {
+        resumenDiv.removeChild(resumenDiv.firstChild);
+    }
+
     //validacion de objeto
     if (Object.values(cita).includes('')) {
         // console.log('El objeto esta vacio');
@@ -225,10 +236,23 @@ function mostrarResumen() {
         //Agrergar a resumenDiv
         resumenDiv.appendChild(noServicios);
 
-
-
-
+        return;
     }
+    //Mostrar el resumen
+    const nombreCita = document.createElement('P');
+    nombreCita.innerHTML = `<span>Nombre: </span>${nombre}`;
+
+    const fechaCita = document.createElement('P');
+    fechaCita.innerHTML = `<span>Fecha: </span>${fecha}`;
+
+    const horaCita = document.createElement('P');
+    horaCita.innerHTML = `<span>Hora: </span>${hora}`;
+    // nombreCita.textContent = `<span>Nombre:</span>${nombre}`; las pone como texto
+
+    resumenDiv.appendChild(nombreCita);
+    resumenDiv.appendChild(fechaCita);
+    resumenDiv.appendChild(horaCita);
+
 }
 
 function nombreCita() {
@@ -317,4 +341,24 @@ function deshabilitarFechaAnterior() {
     const fechaDeshabilitar = `${year}-${mesString}-${dia}`;
 
     inputFecha.min = fechaDeshabilitar;
+}
+
+function horaCita() {
+    const inputHora = document.querySelector('#hora');
+    inputHora.addEventListener('input', e => {
+        // console.log(e.target.value);
+        const horaCita = e.target.value;
+        const hora = horaCita.split(':');
+        if (hora[0] < 10 || hora[0] > 18) {
+
+            mostrarAlerta('Hora no válida', 'error');
+            setTimeout(() => {
+                inputHora.value = '';
+            }, 3000);
+        } else {
+            // console.log('Hora valida');
+            cita.hora = horaCita;
+            console.log(cita);
+        }
+    });
 }

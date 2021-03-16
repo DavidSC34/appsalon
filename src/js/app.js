@@ -238,6 +238,9 @@ function mostrarResumen() {
 
         return;
     }
+
+    const headingCita = document.createElement('H3');
+    headingCita.textContent = 'Resumen de Cita';
     //Mostrar el resumen
     const nombreCita = document.createElement('P');
     nombreCita.innerHTML = `<span>Nombre: </span>${nombre}`;
@@ -249,9 +252,37 @@ function mostrarResumen() {
     horaCita.innerHTML = `<span>Hora: </span>${hora}`;
     // nombreCita.textContent = `<span>Nombre:</span>${nombre}`; las pone como texto
 
+    const serviciosCita = document.createElement('DIV');
+    serviciosCita.classList.add('resumen-servicios');
+    const  headingServicios = document.createElement('H3');
+    headingServicios.textContent = 'Resumen de Servicios';
+    serviciosCita.appendChild(headingServicios);
+
+    //Iterar sobre el arreglo de servicioss
+    servicios.forEach( servicio =>{
+        const {nombre, precio} = servicio;
+            const contenedorServicio = document.createElement('DIV');
+            contenedorServicio.classList.add('contenedor-servicio');
+
+            const textoServicio = document.createElement('P');
+            textoServicio.textContent = nombre;
+            
+            const precioServicio = document.createElement('P');
+            precioServicio.textContent = precio;
+           precioServicio.classList.add( 'precio');
+            //Colocar el texto y precio en el div
+            contenedorServicio.appendChild(textoServicio);
+            contenedorServicio.appendChild(precioServicio);
+            serviciosCita.appendChild(contenedorServicio);
+    });
+
+
+
+    resumenDiv.appendChild(headingCita);
     resumenDiv.appendChild(nombreCita);
     resumenDiv.appendChild(fechaCita);
     resumenDiv.appendChild(horaCita);
+    resumenDiv.appendChild(serviciosCita);
 
 }
 
